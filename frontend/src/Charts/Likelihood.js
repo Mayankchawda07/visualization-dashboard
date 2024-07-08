@@ -1,28 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 
-const Likelihood = ({data}) => {
-  const [barOptions] = useState({
+const Likelihood = ({ data }) => {
+  const [barOptions, setBarOptions] = useState({
     chart: {
       id: 'basic-bar',
     },
     xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001],
+      categories: [],
     },
   });
 
-  const [barSeries] = useState([
-    {
-      name: 'series-1',
-      data: [10, 20, 30, 40, 50, 60, 40, 30, 20, 100],
-    },
-  ]);
+  const [barSeries, setBarSeries] = useState([]);
+
+  useEffect(() => {
+    const countries = [];
+    const likelihoods = [];
+
+    data.forEach(item => {
+      if (!countries.includes(item.country)) {
+        countries.push(item.country);
+      }
+    });
+
+    countries.forEach(country => {
+      const countryData = data.filter(item => item.country === country);
+      const totalLikelihood = countryData.reduce((acc, item) => acc + item.likelihood, 0);
+      likelihoods.push(totalLikelihood);
+    });
+
+    setBarOptions({
+      chart: {
+        id: 'basic-bar',
+      },
+      xaxis: {
+        categories: countries,
+      },
+    });
+
+    setBarSeries([
+      {
+        name: 'Likelihood',
+        data: likelihoods,
+      },
+    ]);
+  }, [data]);
+
   return (
     <div>
-      <h4 className='text-center text-bold text-capitalize'>City Chart</h4>
+      <h4 className='text-center text-bold text-capitalize'>Likelihood Chart</h4>
       <Chart options={barOptions} series={barSeries} type="bar" height="350" />
     </div>
-  )
+  );
 }
 
-export default Likelihood
+export default Likelihood;

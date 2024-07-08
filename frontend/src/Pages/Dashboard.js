@@ -5,6 +5,9 @@ import City from '../Charts/City';
 import Intensity from '../Charts/Intensity';
 import Country from '../Charts/Country';
 import Likelihood from '../Charts/Likelihood';
+import Relevance from '../Charts/Relevance';
+import Topic from '../Charts/Topic';
+import Region from '../Charts/Region';
 
 
 const Dashboard = () => {
@@ -12,7 +15,7 @@ const Dashboard = () => {
     const [data, setData] = useState();
 
     const getdata = () => {
-        fetch('http://localhost:4040/api/v1/visual/getData')
+        fetch('http://localhost:8889/api/v1/visual/getData')
             .then((data) => {
                 return data.json()
             }).then((res) => {
@@ -82,10 +85,13 @@ const Dashboard = () => {
                                         </>
                                     ) : (
                                         <>
-                                            <City data={data} />
                                             <Intensity data={data} />
-                                            <Country data={data} />
                                             <Likelihood data={data} />
+                                            <Relevance data={data}/>
+                                            <Country data={data} />
+                                            <Topic data={data} />
+                                            <Region data={data} />
+                                            <City data={data} />
                                         </>
                                     )}
                                 </div>

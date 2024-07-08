@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 
-const City = ({ data }) => {
+const Topic = ({ data }) => {
   const [barOptions, setBarOptions] = useState({
     chart: {
       id: 'basic-bar',
@@ -14,18 +14,18 @@ const City = ({ data }) => {
   const [barSeries, setBarSeries] = useState([]);
 
   useEffect(() => {
-    const countries = [];
+    const topics = [];
     const intensities = [];
 
     data.forEach(item => {
-      if (!countries.includes(item.country)) {
-        countries.push(item.country);
+      if (!topics.includes(item.topic)) {
+        topics.push(item.topic);
       }
     });
 
-    countries.forEach(country => {
-      const countryData = data.filter(item => item.country === country);
-      const totalIntensity = countryData.reduce((acc, item) => acc + item.intensity, 0);
+    topics.forEach(topic => {
+      const topicData = data.filter(item => item.topic === topic);
+      const totalIntensity = topicData.reduce((acc, item) => acc + item.intensity, 0);
       intensities.push(totalIntensity);
     });
 
@@ -34,7 +34,7 @@ const City = ({ data }) => {
         id: 'basic-bar',
       },
       xaxis: {
-        categories: countries,
+        categories: topics,
       },
     });
 
@@ -48,10 +48,10 @@ const City = ({ data }) => {
 
   return (
     <div>
-      <h4 className='text-center text-bold text-capitalize'>City Chart</h4>
-      <Chart options={barOptions} series={barSeries} type="bar" height="350" />
+      <h4 className='text-center text-bold text-capitalize'>Topic Chart</h4>
+      <Chart options={barOptions} series={barSeries} type="line" height="350" />
     </div>
   );
 }
 
-export default City;
+export default Topic;

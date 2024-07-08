@@ -1,28 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 
-const Country = ({data}) => {
-  const [barOptions] = useState({
+const Country = ({ data }) => {
+  const [barOptions, setBarOptions] = useState({
     chart: {
       id: 'basic-bar',
     },
     xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001],
+      categories: [],
     },
   });
 
-  const [barSeries] = useState([
-    {
-      name: 'series-1',
-      data: [10, 20, 30, 40, 50, 60, 40, 30, 20, 100],
-    },
-  ]);
+  const [barSeries, setBarSeries] = useState([]);
+
+  useEffect(() => {
+    const countries = [];
+    const intensities = [];
+
+    // Extract unique countries
+    data.forEach(item => {
+      if (!countries.includes(item.country)) {
+        countries.push(item.country);
+      }
+    });
+
+    // Calculate total intensity for each country
+    countries.forEach(country => {
+      const countryData = data.filter(item => item.country === country);
+      const totalIntensity = countryData.reduce((acc, item) => acc + item.intensity, 0);
+      intensities.push(totalIntensity);
+    });
+
+    // Update state with dynamic data
+    setBarOptions({
+      chart: {
+        id: 'basic-bar',
+      },
+      xaxis: {
+        categories: countries,
+      },
+    });
+
+    setBarSeries([
+      {
+        name: 'Intensity',
+        data: intensities,
+      },
+    ]);
+  }, [data]);
+
   return (
     <div>
-      <h4 className='text-center text-bold text-capitalize'>City Chart</h4>
+      <h4 className='text-center text-bold text-capitalize'>Country Chart</h4>
       <Chart options={barOptions} series={barSeries} type="bar" height="350" />
     </div>
-  )
+  );
 }
 
-export default Country
+export default Country;

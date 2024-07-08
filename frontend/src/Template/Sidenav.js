@@ -7,12 +7,12 @@ const Sidenav = () => {
             <nav className="sidebar sidebar-offcanvas clr" id="sidebar">
                 <ul className="nav">
                     <li className="nav-item">
-                        <Link className="nav-link" to="/dashboard">
+                        <Link className="nav-link" to="/">
                         <i className="icon-grid menu-icon"></i>
                             <span className="menu-title">Dashboard</span>
                         </Link>
                     </li>
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                         <Link className="nav-link" to="/product">
                             <i className="icon-cog menu-icon"></i>
                             <span className="menu-title">Product</span>
@@ -29,7 +29,7 @@ const Sidenav = () => {
                             <i className="icon-paper menu-icon"></i>
                             <span className="menu-title">Order</span>
                         </Link>
-                    </li>
+                    </li> */}
                 </ul>
             </nav>
         </>
