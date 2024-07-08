@@ -1,30 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidenav from '../Template/Sidenav';
 import Header from '../Template/Header';
-import Chart from 'react-apexcharts';
+import City from '../Charts/City';
+import Intensity from '../Charts/Intensity';
+import Country from '../Charts/Country';
+import Likelihood from '../Charts/Likelihood';
+
 
 const Dashboard = () => {
-    const [barOptions] = useState({
-        chart: {
-            id: 'basic-bar',
-        },
-        xaxis: {
-            categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001],
-        },
-    });
+    const [showTable, setShowTable] = useState(true);
+    const [data, setData] = useState();
 
-    const [barSeries] = useState([
-        {
-            name: 'series-1',
-            data: [10, 20, 30, 40, 50, 60, 40, 30, 20, 100],
-        },
-    ]);
+    const getdata = () => {
+        fetch('http://localhost:4040/api/v1/visual/getData')
+            .then((data) => {
+                return data.json()
+            }).then((res) => {
+                setData(res?.data)
+            })
+    }
 
-    const [donutOptions] = useState({
-        labels: ['A', 'B', 'C', 'D', 'E'],
-    });
-
-    const [donutSeries] = useState([44, 55, 41, 17, 15]);
+    useEffect(() => {
+        getdata();
+    }, [])
 
     return (
         <>
@@ -35,13 +33,61 @@ const Dashboard = () => {
                     <div className="main-panel">
                         <div className="content-wrapper">
                             <div className="row">
-                                <div className="col-md-12 grid-margin">
-                                    <div className="mixed-chart">
-                                        <Chart options={barOptions} series={barSeries} type="bar" width="500" />
-                                    </div>
-                                    <div className="donut">
-                                        <Chart options={donutOptions} series={donutSeries} type="donut" width="380" />
-                                    </div>
+                                <div className='col-md-12'>
+                                    <button onClick={() => setShowTable(!showTable)} className='btn btn-primary mr-2'>{showTable ? 'Show Graphs' : 'Show Table'}</button>
+                                </div>
+                                <div className="col-md-12">
+                                    {showTable ? (
+                                        <>
+                                            <h4 className='text-center text-bold text-capitalize mb-5'>Table</h4>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S.no</th>
+                                                        <th>Topic</th>
+                                                        <th>Country</th>
+                                                        <th>Region</th>
+                                                        <th>Intensity</th>
+                                                        <th>Likelihood</th>
+                                                        <th>Relevance</th>
+                                                        <th>Start Year</th>
+                                                        <th>End Year</th>
+                                                        
+                                                      
+                                                       
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {data?.map((val, i) => {
+                                                        return (
+                                                            <tr key={i}>
+                                                                <td>{i + 1}</td>
+                                                                <td>{val?.topic}</td>
+                                                                <td>{val?.country}</td>
+                                                                <td>{val?.region}</td>
+                                                                <td>{val?.intensity}</td>
+                                                                <td>{val?.likelihood}</td>
+                                                                <td>{val?.relevance}</td>
+                                                                <td>{val?.start_year}</td>
+                                                                <td>{val?.end_year}</td>
+                                                               
+                                                                
+                                                                
+                                                            </tr>
+                                                        )
+                                                    })}
+
+                                                </tbody>
+                                            </table>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <City data={data} />
+                                            <Intensity data={data} />
+                                            <Country data={data} />
+                                            <Likelihood data={data} />
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>

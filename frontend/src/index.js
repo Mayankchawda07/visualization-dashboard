@@ -13,12 +13,10 @@ import Order from './Pages/Order';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename='/test'>
+    <BrowserRouter basename='/'>
       <Routes>
         <Route element={<App />} >
-
-          <Route index path='/' element={<Login />} />
-          <Route index path='/dashboard' element={<Dashboard />} />
+          <Route index path='/' element={<Dashboard />} />
           <Route index path='/product' element={<Product />} />
           <Route index path='/customer' element={<Customer />} />
           <Route index path='/order' element={<Order />} />
