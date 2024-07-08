@@ -13,7 +13,7 @@ import Order from './Pages/Order';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename='/'>
+    <BrowserRouter basename='/learnfrontend/'>
       <Routes>
         <Route element={<App />} >
           <Route index path='/' element={<Dashboard />} />

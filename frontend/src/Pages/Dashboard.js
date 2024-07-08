@@ -15,7 +15,7 @@ const Dashboard = () => {
     const [data, setData] = useState();
 
     const getdata = () => {
-        fetch('http://localhost:8889/api/v1/visual/getData')
+        fetch('http://206.189.130.102:8889/api/v1/visual/getData')
             .then((data) => {
                 return data.json()
             }).then((res) => {
